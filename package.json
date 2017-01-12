@@ -1,0 +1,8 @@
+{
+  "name": "roomz",
+  "version": "1.0.0",
+  "description": "Share your presence with your team",
+  "main": "main.js",
+  "author": "Julien Biezemans <jb@jbpros.com>",
+  "license": "MIT"
+}
