@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Roomz</title>
+    <style>
+      html: { height: 100%; }
+      body {
+        background: grey;
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script>
+    const e = React.createElement
+
+    ReactDOM.render(
+      e('h1', null, 'roomz'),
+      document.getElementById('app')
+    )
+  </script>
+</html>
