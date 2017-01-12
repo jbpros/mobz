@@ -5,12 +5,25 @@
   "main": "main.js",
   "author": "Julien Biezemans <jb@jbpros.com>",
   "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "build-production": "webpack --progress --optimize-minimize --optimize-occurence-order --optimize-dedupe --devtool none",
+    "build-watch": "webpack --watch"
+  },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
     "eslint": "^3.13.1",
-    "eslint-plugin-react": "^6.9.0"
+    "eslint-plugin-react": "^6.9.0",
+    "webpack": "^1.14.0"
   },
   "dependencies": {
-    "electron": "^1.4.14"
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "electron": "^1.4.14",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   }
 }
