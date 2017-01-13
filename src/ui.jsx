@@ -1,6 +1,8 @@
 const React = require('react')
 const ReactDOM = require('react-dom')
 const { createStore } = require('redux')
+const { Provider } = require('react-redux')
+const Roomz = require('./roomz/roomz')
 
 function reducer(state, action) {
   switch (action.type) {
@@ -11,13 +13,9 @@ function reducer(state, action) {
 
 const store = createStore(reducer)
 
-class Roomz extends React.Component {
-  render() {
-    return <h1>roomz</h1>
-  }
-}
-
 ReactDOM.render(
-  <Roomz />,
+  <Provider store={store}>
+    <Roomz />
+  </Provider>,
   document.getElementById('app')
 )
