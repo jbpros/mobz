@@ -7,6 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "electron .",
+    "serve": "node server.js",
+    "serve-watch": "nodemon server.js",
     "build": "webpack",
     "build-production": "webpack --progress --optimize-minimize --optimize-occurence-order --optimize-dedupe --devtool none",
     "build-watch": "webpack --watch"
@@ -18,6 +20,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "eslint": "^3.13.1",
     "eslint-plugin-react": "^6.9.0",
+    "nodemon": "^1.11.0",
     "webpack": "^1.14.0"
   },
   "dependencies": {
@@ -27,6 +30,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "sse": "^0.0.6"
   }
 }

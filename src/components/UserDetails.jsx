@@ -22,6 +22,7 @@ class UserDetailsForm extends React.Component {
     return <form onSubmit={::this.handleSubmit}>
       <label htmlFor="email">Email</label>
       <input
+        type="email"
         id="email"
         value={this.state.email}
         onChange={::this.handleChange}></input>
