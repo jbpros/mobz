@@ -4,7 +4,7 @@ const url = require('url')
 
 let win, tray, currentRoomName = 'catz'
 
-function createRoomWindow({ roomName }) {
+function createMainWindow({ roomName }) {
   win = new BrowserWindow({
     title: "Roomz",
     x: 9999,
@@ -162,7 +162,7 @@ app.on('ready', () => {
   // trayIcon.setTemplateImage(true)
   tray = new Tray(trayIcon)
   tray.setTitle(`#${currentRoomName}`)
-  createRoomWindow({ roomName: currentRoomName })
+  createMainWindow({ roomName: currentRoomName })
 })
 
 app.on('window-all-closed', () => {
@@ -172,5 +172,5 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (win === null)
-    createRoomWindow({ roomName: currentRoomName })
+    createMainWindow({ roomName: currentRoomName })
 })

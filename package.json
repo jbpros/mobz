@@ -6,6 +6,7 @@
   "author": "Julien Biezemans <jb@jbpros.com>",
   "license": "MIT",
   "scripts": {
+    "start": "electron .",
     "build": "webpack",
     "build-production": "webpack --progress --optimize-minimize --optimize-occurence-order --optimize-dedupe --devtool none",
     "build-watch": "webpack --watch"

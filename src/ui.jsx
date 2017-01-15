@@ -4,7 +4,11 @@ const { createStore } = require('redux')
 const { Provider } = require('react-redux')
 const Roomz = require('./roomz/roomz')
 
-function reducer(state, action) {
+const initialState = {
+  userDetails: null
+}
+
+function reducer(state = initialState, action) {
   switch (action.type) {
     default:
       return state
