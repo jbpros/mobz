@@ -5,7 +5,7 @@ const {
 } = require('../pickers')
 const UserDetails = require('./UserDetails')
 
-class Roomz extends React.Component {
+class Mobz extends React.Component {
   renderUserDetails() {
     return <UserDetails />
   }
@@ -20,7 +20,7 @@ class Roomz extends React.Component {
   }
 }
 
-Roomz.propTypes = {
+Mobz.propTypes = {
   needsUser: React.PropTypes.bool.isRequired,
   isOutsideRooms: React.PropTypes.bool.isRequired
 }
@@ -29,4 +29,4 @@ const mapStateToProps = state => ({
   needsUser: !hasUserDetails(state),
 })
 
-module.exports = connect(mapStateToProps)(Roomz)
+module.exports = connect(mapStateToProps)(Mobz)

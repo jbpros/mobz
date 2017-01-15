@@ -6,7 +6,7 @@ let win, tray, currentRoomName = 'catz'
 
 function createMainWindow({ roomName }) {
   win = new BrowserWindow({
-    title: "Roomz",
+    title: "Mobz",
     x: 9999,
     y: 0,
     width: 180,
