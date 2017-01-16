@@ -34,7 +34,6 @@ UserDetailsForm.propTypes = {
   onSubmit: React.PropTypes.func.isRequired
 }
 
-
 // TODO: remember details between app runs
 class UserDetails extends React.Component {
   handleSubmit({ email }) {
