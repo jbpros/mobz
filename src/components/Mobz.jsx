@@ -21,8 +21,7 @@ class Mobz extends React.Component {
 }
 
 Mobz.propTypes = {
-  needsUser: React.PropTypes.bool.isRequired,
-  isOutsideRooms: React.PropTypes.bool.isRequired
+  needsUser: React.PropTypes.bool.isRequired
 }
 
 const mapStateToProps = state => ({
