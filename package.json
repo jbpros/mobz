@@ -14,8 +14,12 @@
     "build-watch": "webpack --watch"
   },
   "devDependencies": {
+    "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.10",
     "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-plugin-transform-strict-mode": "^6.18.0",
+    "babel-polyfill": "^6.20.0",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
@@ -25,8 +29,6 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
-    "babel-core": "^6.21.0",
-    "babel-loader": "^6.2.10",
     "electron": "^1.4.14",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
