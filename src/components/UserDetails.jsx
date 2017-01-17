@@ -41,7 +41,9 @@ class UserDetails extends React.Component {
   }
 
   render() {
-    return <UserDetailsForm onSubmit={::this.handleSubmit} />
+    return <div>
+      <UserDetailsForm onSubmit={::this.handleSubmit} />
+    </div>
   }
 }
 
@@ -49,8 +51,10 @@ UserDetails.propTypes = {
   dispatch: React.PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-  userDetails: pickUserDetails(state)
-})
+const mapStateToProps = state => {
+  return {
+    userDetails: pickUserDetails(state)
+  }
+}
 
 module.exports = connect(mapStateToProps)(UserDetails)

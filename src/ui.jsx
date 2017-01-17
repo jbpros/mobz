@@ -9,6 +9,7 @@ import createSagaMiddleware from 'redux-saga'
 const Mobz = require('./components/Mobz')
 const reducer = require('./reducer')
 const mainSaga = require('./sagas')
+const { receiveEvent } = require('./actions')
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -22,4 +23,7 @@ ReactDOM.render(
 )
 
 const es = new EventSource('http://127.0.0.1:8080/sse')
-es.onmessage = (event) => console.log(event.data)
+es.onmessage = ({ data }) => {
+  const event = JSON.parse(data)
+  store.dispatch(receiveEvent(event))
+}
