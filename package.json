@@ -6,12 +6,15 @@
   "author": "Julien Biezemans <jb@jbpros.com>",
   "license": "MIT",
   "scripts": {
+    "test": "yarn run build && yarn run eslint",
     "start": "electron .",
     "serve": "node server.js",
     "serve-watch": "nodemon server.js",
     "build": "webpack",
     "build-production": "webpack --progress --optimize-minimize --optimize-occurence-order --optimize-dedupe --devtool none",
-    "build-watch": "webpack --watch"
+    "build-watch": "webpack --watch",
+    "eslint": "eslint --ext=js --ext=jsx --ignore-pattern '!.eslintrc.js' .eslintrc.js test/.eslintrc.js *.js src",
+    "eslint-fix": "eslint --fix --ext=js --ext=jsx --ignore-pattern '!.eslintrc.js' .eslintrc.js test/.eslintrc.js *.js src"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
