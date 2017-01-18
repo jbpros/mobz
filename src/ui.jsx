@@ -14,6 +14,7 @@ const { receiveEvent } = require('./actions')
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(reducer, applyMiddleware(sagaMiddleware))
+sagaMiddleware.run(mainSaga)
 
 ReactDOM.render(
   <Provider store={store}>

@@ -5,7 +5,7 @@ const {
 
 const initialState = {
   events: [],
-  userDetails: null
+  userDetails: JSON.parse(localStorage.getItem('userDetails') || 'null')
 }
 
 module.exports = function reducer(state = initialState, action) {
