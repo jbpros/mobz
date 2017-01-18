@@ -7,18 +7,18 @@ let win, tray, currentRoomName = 'catz'
 function createMainWindow({ roomName }) {
   win = new BrowserWindow({
     title: "Mobz",
-    x: 9999,
-    y: 0,
-    width: 180,
-    height: 50,
-    frame: false,
+    // x: 9999,
+    // y: 0,
+    width: 420,
+    height: 240,
+    // frame: false,
     // focusable: false,
     alwaysOnTop: true,
     fullscreenable: false,
     hasShadow: false,
     // resizable: false,
-    movable: false,
-    transparent: true
+    // movable: false,
+    // transparent: true
   })
 
   win.loadURL(url.format({
