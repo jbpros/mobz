@@ -24,7 +24,8 @@ function createMainWindow() {
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: true,
+    query: { profile: process.env.mobz_profile }
   }))
 
   win.on('closed', () => win = null)
