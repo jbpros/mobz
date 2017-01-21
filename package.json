@@ -33,6 +33,9 @@
   },
   "dependencies": {
     "electron": "^1.4.14",
+    "koa": "2",
+    "koa-json-body": "^5.2.0",
+    "koa-router": "^7.1.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",

@@ -1,11 +1,13 @@
 const SSE = require('sse')
 const http = require('http')
 const Stream = require('stream')
-
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' })
-  res.end('okay')
-})
+const Koa = require('koa')
+const koaRouter = require('koa-router')
+const jsonBody = require('koa-json-body')
+const {
+  PINGED,
+  USER_ENTERED_ROOM
+} = require('./src/events')
 
 class EventSourceStream extends Stream.Writable {
   constructor(client) {
@@ -29,20 +31,29 @@ const arrayToStream = (array) => {
   })
 }
 
-const events = [
-  { type: 'type1', data: 'hi' },
-  { type: 'type2', data: 'there' },
-  { type: 'type3', data: 'sup?' },
-]
+const events = []
 
-function publishEvent(event) {
+function publishEvent(type, payload) {
+  const event = { type, payload }
   events.push(event)
   broadcastStream.write(event)
 }
 
 const broadcastStream = new Stream.PassThrough({ objectMode: true })
 
-setInterval(() => publishEvent({ type: 'rnd', data: Date.now() }), 1000)
+setInterval(() => publishEvent(PINGED, { timestamp: Date.now() }), 1000)
+
+const app = new Koa()
+const router = koaRouter()
+router.post('/room-attendances', jsonBody(), ctx => {
+  const { userDetails } = ctx.request.body
+  publishEvent(USER_ENTERED_ROOM, { userDetails })
+  ctx.body = { ok: true }
+})
+app.use(router.routes())
+app.use(router.allowedMethods())
+
+const server = http.createServer(app.callback())
 
 server.listen(8080, '127.0.0.1', () => {
   const sse = new SSE(server)

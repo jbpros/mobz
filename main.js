@@ -2,11 +2,11 @@ const { app, BrowserWindow, Tray, nativeImage, Menu } = require('electron')
 const path = require('path')
 const url = require('url')
 
-let win, tray, currentRoomName = 'catz'
+let win, tray
 
-function createMainWindow({ roomName }) {
+function createMainWindow() {
   win = new BrowserWindow({
-    title: "Mobz",
+    title: 'Mobz',
     // x: 9999,
     // y: 0,
     width: 420,
@@ -24,8 +24,7 @@ function createMainWindow({ roomName }) {
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
-    slashes: true,
-    query: { roomName }
+    slashes: true
   }))
 
   win.on('closed', () => win = null)
@@ -161,8 +160,8 @@ app.on('ready', () => {
   let trayIcon = nativeImage.createFromPath(path.join(__dirname, 'images', 'tray.png'))
   // trayIcon.setTemplateImage(true)
   tray = new Tray(trayIcon)
-  tray.setTitle(`#${currentRoomName}`)
-  createMainWindow({ roomName: currentRoomName })
+  tray.setTitle(`mobz`)
+  createMainWindow()
 })
 
 app.on('window-all-closed', () => {
@@ -172,5 +171,5 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (win === null)
-    createMainWindow({ roomName: currentRoomName })
+    createMainWindow()
 })
