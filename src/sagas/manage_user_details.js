@@ -1,4 +1,3 @@
-import querystring from 'querystring'
 import {
   call,
   put,
@@ -10,9 +9,9 @@ import {
   setUserDetails
 } from '../actions'
 import api from '../api'
+import params from '../params'
 
-const params = querystring.parse(global.location.search.substr(1))
-const configScope = params.profile || 'default'
+const configScope = params().profile || 'default'
 const configItemId = item => `${configScope}.${item}`
 
 function* manageUserDetails() {
