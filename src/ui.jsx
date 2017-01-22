@@ -9,7 +9,11 @@ import createSagaMiddleware from 'redux-saga'
 const Mobz = require('./components/Mobz')
 const reducer = require('./reducer')
 const mainSaga = require('./sagas')
-const { receiveEvent } = require('./actions')
+const Api = require('./api')
+const {
+  initializeApi,
+  receiveEvent
+} = require('./actions')
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -23,8 +27,15 @@ ReactDOM.render(
   document.getElementById('app')
 )
 
-const es = new EventSource('http://127.0.0.1:8080/sse')
-es.onmessage = ({ data }) => {
+const socket = new WebSocket('ws://localhost:8080')
+
+socket.addEventListener('open', () => {
+  const api = new Api(socket)
+  store.dispatch(initializeApi(api))
+})
+
+socket.addEventListener('message', ({ data }) => {
+  // console.log('Message from server', data)
   const event = JSON.parse(data)
   store.dispatch(receiveEvent(event))
-}
+})

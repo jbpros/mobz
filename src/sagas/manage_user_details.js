@@ -2,20 +2,23 @@ import {
   call,
   put,
   fork,
+  take,
   takeEvery
 } from 'redux-saga/effects'
 import {
+  INITIALIZE_API,
   SET_USER_DETAILS,
   setUserDetails
 } from '../actions'
-import api from '../api'
 import params from '../params'
 
 const configScope = params().profile || 'default'
 const configItemId = item => `${configScope}.${item}`
 
 function* manageUserDetails() {
-  yield fork(persistNewUserDetails)
+  const { api } = yield take(INITIALIZE_API)
+  console.log('api', api)
+  yield fork(persistNewUserDetails, api)
   yield call(restoreUserDetails)
 }
 
@@ -25,11 +28,11 @@ function* restoreUserDetails() {
     yield put(setUserDetails(restoredUserDetails))
 }
 
-function* persistNewUserDetails() {
+function* persistNewUserDetails(api) {
   yield takeEvery(SET_USER_DETAILS, function* ({ userDetails }) {
     localStorage.setItem(configItemId('userDetails'), JSON.stringify(userDetails))
     // TODO: extract to separate saga:
-    yield call(api.enterRoom, userDetails)
+    yield call(api.enterRoom.bind(api), userDetails)
   })
 }
 
