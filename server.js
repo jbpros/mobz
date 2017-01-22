@@ -38,17 +38,17 @@ const arrayToStream = (array) => {
 
 const broadcastStream = new Stream.PassThrough({ objectMode: true })
 
-function publishEvent(type, payload) {
-  const event = { type, payload }
+function publishEvent(type, payload = {}) {
+  const event = Object.assign({ type, payload }, { timestamp: Date.now() })
   events.push(event)
   broadcastStream.write(event)
 }
 
 const events = []
 
-publishEvent(PINGED, { timestamp: Date.now() })
+publishEvent(PINGED)
 
-setInterval(() => publishEvent(PINGED, { timestamp: Date.now() }), 10000)
+setInterval(() => publishEvent(PINGED), 10000)
 
 const server = http.createServer()
 
