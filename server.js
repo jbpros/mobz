@@ -2,8 +2,12 @@ const http = require('http')
 const Stream = require('stream')
 const Websocket = require('ws')
 const {
-  PINGED
+  PINGED,
+  USER_ENTERED_ROOM
 } = require('./src/events')
+const {
+  ENTER_ROOM
+} = require('./src/commands')
 
 class WebSocketSendStream extends Stream.Writable {
   constructor(ws) {
@@ -55,8 +59,13 @@ server.listen(8080, '127.0.0.1', () => {
       .pipe(wsStream, { end: false })
 
     ws.on('message', message => {
-      const data = JSON.parse(message)
-      console.log("MSG", JSON.stringify(data, null, 2))
+      const command = JSON.parse(message)
+      switch (command.name) {
+        case ENTER_ROOM: {
+          const { userDetails } = command.payload
+          return publishEvent(USER_ENTERED_ROOM, { userDetails })
+        }
+      }
     })
 
     ws.on('close', () => {
