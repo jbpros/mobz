@@ -35,7 +35,6 @@ socket.addEventListener('open', () => {
 })
 
 socket.addEventListener('message', ({ data }) => {
-  // console.log('Message from server', data)
   const event = JSON.parse(data)
   store.dispatch(receiveEvent(event))
 })

@@ -17,7 +17,6 @@ const configItemId = item => `${configScope}.${item}`
 
 function* manageUserDetails() {
   const { api } = yield take(INITIALIZE_API)
-  console.log('api', api)
   yield fork(persistNewUserDetails, api)
   yield call(restoreUserDetails)
 }

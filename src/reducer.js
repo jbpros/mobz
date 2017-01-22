@@ -5,7 +5,8 @@ const {
   SET_USER_DETAILS
 } = require('./actions')
 const {
-  USER_ENTERED_ROOM
+  USER_ENTERED_ROOM,
+  USER_LEFT_ROOM
 } = require('./events')
 
 const events = (state = [], action) => {
@@ -19,6 +20,13 @@ const roomAttendees = (state = {}, action) => {
     case receiveEventActionType(USER_ENTERED_ROOM): {
       const { userDetails } = action.event.payload
       return Object.assign({}, state, { [userDetails.email]: userDetails })
+    }
+
+    case receiveEventActionType(USER_LEFT_ROOM): {
+      const { userDetails: { email } } = action.event.payload
+      state = Object.assign({}, state)
+      delete state[email]
+      return state
     }
 
     default:
