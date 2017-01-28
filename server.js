@@ -1,5 +1,6 @@
 const http = require('http')
 const Stream = require('stream')
+const EventEmitter = require('events')
 const Websocket = require('ws')
 const {
   PINGED,
@@ -26,22 +27,46 @@ class WebSocketSendStream extends Stream.Writable {
   }
 }
 
-const arrayToStream = (array) => {
-  let cursor = 0
-  return new Stream.Readable({
+// TODO: merge array and semaphore into a list emitting events on new items appended
+const arrayToStream = (array, semaphore) => {
+  let cursor = -1
+  let signalListener = null
+
+  const stream = new Stream.Readable({
     objectMode: true,
     read: function () {
-      this.push(array[cursor++] || null)
+      const next = array[++cursor] || null
+      if (next) {
+        this.push(next)
+      } else {
+        signalListener = () => {
+          signalListener = null
+          this.push(array[cursor])
+        }
+        semaphore.once('signal', signalListener)
+      }
     }
   })
+  stream.end = () => {
+    if (signalListener)
+      semaphore.removeListener('signal', signalListener)
+    stream.push(null)
+  }
+  return stream
 }
 
-const broadcastStream = new Stream.PassThrough({ objectMode: true })
+class Semaphore extends EventEmitter {
+  signal() {
+    this.emit('signal')
+  }
+}
+
+const semaphore = new Semaphore()
 
 function publishEvent(type, payload = {}) {
   const event = Object.assign({ type, payload }, { timestamp: Date.now() })
   events.push(event)
-  broadcastStream.write(event)
+  semaphore.signal()
 }
 
 const events = []
@@ -58,10 +83,9 @@ server.listen(8080, '127.0.0.1', () => {
     const wsStream = new WebSocketSendStream(ws)
     let userDetails
 
-    arrayToStream(events)
-      // after catching up with previous events,
-      // start broadcasting live events:
-      .on('end', () => broadcastStream.pipe(wsStream))
+
+    const eventStream = arrayToStream(events, semaphore)
+    eventStream
       .pipe(wsStream, { end: false })
 
     ws.on('message', message => {
@@ -74,8 +98,9 @@ server.listen(8080, '127.0.0.1', () => {
       }
     })
 
-    ws.on('close', () => {
-      broadcastStream.unpipe(wsStream)
+    ws.once('close', () => {
+      eventStream.end()
+      eventStream.unpipe(wsStream)
       if (userDetails)
         publishEvent(USER_LEFT_ROOM, { userDetails })
     })

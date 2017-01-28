@@ -18,7 +18,6 @@ class Mobz extends React.Component {
 
   renderRoom() {
     return <div>
-      <h1>#dev</h1>
       <RoomAttendees attendees={this.props.roomAttendees} />
     </div>
   }
