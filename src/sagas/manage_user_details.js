@@ -3,7 +3,7 @@ import {
   put,
   fork,
   take,
-  takeEvery
+  takeLatest
 } from 'redux-saga/effects'
 import {
   INITIALIZE_API,
@@ -16,9 +16,10 @@ const configScope = params().profile || 'default'
 const configItemId = item => `${configScope}.${item}`
 
 function* manageUserDetails() {
-  const { api } = yield take(INITIALIZE_API)
-  yield fork(persistNewUserDetails, api)
-  yield call(restoreUserDetails)
+  yield takeLatest(INITIALIZE_API, function* ({ api }) {
+    yield fork(persistNewUserDetails, api)
+    yield call(restoreUserDetails)
+  })
 }
 
 function* restoreUserDetails() {
@@ -28,7 +29,7 @@ function* restoreUserDetails() {
 }
 
 function* persistNewUserDetails(api) {
-  yield takeEvery(SET_USER_DETAILS, function* ({ userDetails }) {
+  yield takeLatest(SET_USER_DETAILS, function* ({ userDetails }) {
     localStorage.setItem(configItemId('userDetails'), JSON.stringify(userDetails))
     // TODO: extract to separate saga:
     yield call(api.enterRoom.bind(api), userDetails)

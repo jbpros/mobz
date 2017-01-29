@@ -27,14 +27,31 @@ ReactDOM.render(
   document.getElementById('app')
 )
 
-const socket = new WebSocket('ws://localhost:8080')
+let socket
 
-socket.addEventListener('open', () => {
-  const api = new Api(socket)
-  store.dispatch(initializeApi(api))
-})
+const connect = () => {
+  console.log("connecting")
+  socket = new WebSocket('ws://localhost:8080')
 
-socket.addEventListener('message', ({ data }) => {
-  const event = JSON.parse(data)
-  store.dispatch(receiveEvent(event))
-})
+  socket.addEventListener('open', () => {
+    console.log("connected")
+    const api = new Api(socket)
+    store.dispatch(initializeApi(api))
+  })
+
+  socket.addEventListener('message', ({ data }) => {
+    const event = JSON.parse(data)
+    store.dispatch(receiveEvent(event))
+  })
+
+  socket.addEventListener('error', (a) => {
+    // console.log("ERROR", a)
+  })
+
+  socket.addEventListener('close', (a) => {
+    console.log("closed")
+    setTimeout(connect, 2000)
+  })
+}
+
+connect()

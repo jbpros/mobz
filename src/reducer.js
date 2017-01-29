@@ -1,6 +1,7 @@
 const { combineReducers } = require('redux')
 const {
   receiveEventActionType,
+  INITIALIZE_API,
   RECEIVE_EVENT,
   SET_USER_DETAILS
 } = require('./actions')
@@ -10,13 +11,19 @@ const {
 } = require('./events')
 
 const events = (state = [], action) => {
-  if (action.type.indexOf(`${RECEIVE_EVENT}:`) === 0)
+  if (action.type === INITIALIZE_API)
+    return []
+  else if (action.type.indexOf(`${RECEIVE_EVENT}:`) === 0)
     return state.concat([action.event])
   return state
 }
 
 const roomAttendees = (state = {}, action) => {
   switch (action.type) {
+    case INITIALIZE_API: {
+      return {}
+    }
+
     case receiveEventActionType(USER_ENTERED_ROOM): {
       const { userDetails } = action.event.payload
       return Object.assign({}, state, { [userDetails.email]: userDetails })
