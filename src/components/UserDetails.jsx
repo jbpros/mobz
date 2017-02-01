@@ -6,8 +6,8 @@ const { setUserDetails } = require('../actions')
 
 // TODO: remember details between app runs
 class UserDetails extends React.Component {
-  handleSubmit({ email }) {
-    this.props.dispatch(setUserDetails({ email }))
+  handleSubmit({ deviceId, email }) {
+    this.props.dispatch(setUserDetails({ deviceId, email }))
   }
 
   render() {

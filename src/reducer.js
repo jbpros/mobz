@@ -26,13 +26,13 @@ const roomAttendees = (state = {}, action) => {
 
     case receiveEventActionType(USER_ENTERED_ROOM): {
       const { userDetails } = action.event.payload
-      return Object.assign({}, state, { [userDetails.email]: userDetails })
+      return Object.assign({}, state, { [userDetails.deviceId]: userDetails })
     }
 
     case receiveEventActionType(USER_LEFT_ROOM): {
-      const { userDetails: { email } } = action.event.payload
+      const { userDetails: { deviceId } } = action.event.payload
       state = Object.assign({}, state)
-      delete state[email]
+      delete state[deviceId]
       return state
     }
 
