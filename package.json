@@ -33,8 +33,9 @@
   },
   "dependencies": {
     "basscss": "^8.0.3",
+    "basscss-addons": "^1.0.0",
     "classname": "^0.0.0",
-    "electron": "^1.4.14",
+    "electron": "^1.4.15",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",

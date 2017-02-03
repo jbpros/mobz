@@ -1,16 +1,22 @@
 const React = require('react')
+const Gravatar = require('./Gravatar')
 
 class RoomAttendees extends React.Component {
   renderAttendees() {
     return this.props.attendees.map(({ email }, i) => {
       return <li
         key={i}
-        className="m1 p1 border bg-blue">{email}</li>
+        className="m1">
+        <Gravatar
+          email={email}
+          className='block border circle border-darken'
+          size={48} />
+      </li>
     })
   }
 
   render() {
-    return <ul className="list-reset flex">{this.renderAttendees()}</ul>
+    return <ul className="list-reset flex flex-wrap justify-center">{this.renderAttendees()}</ul>
   }
 }
 
