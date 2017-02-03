@@ -1,6 +1,7 @@
 const INITIALIZE_API = 'initialize-api'
 const RECEIVE_EVENT = 'receive-event'
 const SET_USER_DETAILS = 'set-user-details'
+const TOGGLE_ATTENDEE_ATTENTION = 'toggle-attendee-attention'
 
 const receiveEventActionType = type => `${RECEIVE_EVENT}:${type}`
 
@@ -20,8 +21,14 @@ module.exports = {
   receiveEventActionType,
 
   SET_USER_DETAILS,
-  setUserDetails: (userDetails) => ({
+  setUserDetails: userDetails => ({
     type: SET_USER_DETAILS,
     userDetails
+  }),
+
+  TOGGLE_ATTENDEE_ATTENTION,
+  toggleUserAttention: ({ email }) => ({
+    type: TOGGLE_ATTENDEE_ATTENTION,
+    email
   })
 }

@@ -5,10 +5,12 @@ const Websocket = require('ws')
 const {
   PINGED,
   USER_ENTERED_ROOM,
-  USER_LEFT_ROOM
+  USER_LEFT_ROOM,
+  USER_STOPPED_PAYING_ATTENTION
 } = require('./src/events')
 const {
-  ENTER_ROOM
+  ENTER_ROOM,
+  STOP_PAYING_ATTENTION
 } = require('./src/commands')
 
 class WebSocketSendStream extends Stream.Writable {
@@ -64,6 +66,7 @@ class Semaphore extends EventEmitter {
 const semaphore = new Semaphore()
 
 function publishEvent(type, payload = {}) {
+  if (!type) throw new Error('Missing event type')
   const event = Object.assign({ type, payload }, { timestamp: Date.now() })
   events.push(event)
   semaphore.signal()
@@ -93,7 +96,19 @@ server.listen(8080, '127.0.0.1', () => {
       switch (command.name) {
         case ENTER_ROOM: {
           userDetails = command.payload.userDetails
-          return publishEvent(USER_ENTERED_ROOM, { userDetails })
+          return publishEvent(USER_ENTERED_ROOM, {
+            deviceId: userDetails.deviceId,
+            email: userDetails.email
+          })
+        }
+
+        case STOP_PAYING_ATTENTION: {
+          const { email } = command.payload
+          return publishEvent(USER_STOPPED_PAYING_ATTENTION, { email })
+        }
+
+        default: {
+          console.log("Unknown message:", JSON.stringify(message, null, 2))
         }
       }
     })
@@ -102,7 +117,10 @@ server.listen(8080, '127.0.0.1', () => {
       eventStream.end()
       eventStream.unpipe(wsStream)
       if (userDetails)
-        publishEvent(USER_LEFT_ROOM, { userDetails })
+        publishEvent(USER_LEFT_ROOM, {
+          deviceId: userDetails.deviceId,
+          email: userDetails.email
+        })
     })
 
     ws.on('error', err => {

@@ -7,7 +7,8 @@ const {
 } = require('./actions')
 const {
   USER_ENTERED_ROOM,
-  USER_LEFT_ROOM
+  USER_LEFT_ROOM,
+  USER_STOPPED_PAYING_ATTENTION
 } = require('./events')
 
 const events = (state = [], action) => {
@@ -25,14 +26,42 @@ const roomAttendees = (state = {}, action) => {
     }
 
     case receiveEventActionType(USER_ENTERED_ROOM): {
-      const { userDetails } = action.event.payload
-      return Object.assign({}, state, { [userDetails.deviceId]: userDetails })
+      const { deviceId, email } = action.event.payload
+      const attendee = state[email] || {
+        email,
+        deviceIds: [],
+        isPayingAttention: true
+      }
+      const updatedAttendee = Object.assign({}, attendee, {
+        deviceIds: attendee.deviceIds.concat([deviceId])
+      })
+      state = Object.assign({}, state, { [email]: updatedAttendee })
+      console.log("entered", state)
+      return state
+    }
+
+    case receiveEventActionType(USER_STOPPED_PAYING_ATTENTION): {
+      console.log('---', action.event.payload)
+      const { email } = action.event.payload
+      const attendee = state[email]
+      const updatedAttendee = Object.assign({}, attendee, { isPayingAttention: false })
+      state = Object.assign({}, state, { [email]: updatedAttendee })
+      console.log(state)
+      return state
     }
 
     case receiveEventActionType(USER_LEFT_ROOM): {
-      const { userDetails: { deviceId } } = action.event.payload
-      state = Object.assign({}, state)
-      delete state[deviceId]
+      const { deviceId, email } = action.event.payload
+      const attendee = state[email]
+      const updatedAttendee = Object.assign({}, attendee, {
+        deviceIds: attendee.deviceIds.filter(id => id != deviceId)
+      })
+      if (updatedAttendee.deviceIds.length > 0) {
+        state = Object.assign({}, state, { [email]: updatedAttendee })
+      } else {
+        state = Object.assign({}, state)
+        delete state[email]
+      }
       return state
     }
 

@@ -10,15 +10,25 @@ const {
   pickRoomAttendees,
   pickUserDetails
 } = require('../pickers')
+const {
+  toggleUserAttention
+} = require('../actions')
 
 class Mobz extends React.Component {
+  handleAttendeeClick({ email }) {
+    if (email === this.props.userDetails.email)
+      this.props.dispatch(toggleUserAttention({ email: this.props.userDetails.email }))
+  }
+
   renderUserDetails() {
     return <UserDetails />
   }
 
   renderRoom() {
     return <div>
-      <RoomAttendees attendees={this.props.roomAttendees} />
+      <RoomAttendees
+        attendees={this.props.roomAttendees}
+        onAttendeeClick={::this.handleAttendeeClick} />
     </div>
   }
 
@@ -43,14 +53,15 @@ Mobz.propTypes = {
   events: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
   needsUser: React.PropTypes.bool.isRequired,
   roomAttendees: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-  userDetails: React.PropTypes.object
+  userDetails: React.PropTypes.object,
+  dispatch: React.PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
   events: pickAllEvents(state),
   needsUser: !hasUserDetails(state),
   roomAttendees: pickRoomAttendees(state),
-  userDetails: pickUserDetails(state)
+  userDetails: pickUserDetails(state),
 })
 
 module.exports = connect(mapStateToProps)(Mobz)

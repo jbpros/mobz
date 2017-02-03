@@ -31,7 +31,7 @@ function* persistNewUserDetails(api) {
   yield takeLatest(SET_USER_DETAILS, function* ({ userDetails }) {
     localStorage.setItem(configItemId('userDetails'), JSON.stringify(userDetails))
     // TODO: extract to separate saga:
-    yield call(api.enterRoom.bind(api), userDetails)
+    yield call(::api.enterRoom, userDetails)
   })
 }
 
