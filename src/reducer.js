@@ -2,6 +2,7 @@ const { combineReducers } = require('redux')
 const {
   receiveEventActionType,
   INITIALIZE_API,
+  CLOSE_API,
   RECEIVE_EVENT,
   SET_USER_DETAILS
 } = require('./actions')
@@ -11,6 +12,19 @@ const {
   USER_STARTED_PAYING_ATTENTION,
   USER_STOPPED_PAYING_ATTENTION
 } = require('./events')
+
+const apiStatus = (state = 'closed', action) => {
+  switch (action.type) {
+    case INITIALIZE_API:
+      return 'ready'
+
+    case CLOSE_API:
+      return 'closed'
+
+    default:
+      return state
+  }
+}
 
 const events = (state = [], action) => {
   if (action.type === INITIALIZE_API)
@@ -85,6 +99,7 @@ const userDetails = (state = null, action) => {
 }
 
 module.exports = combineReducers({
+  apiStatus,
   events,
   roomAttendees,
   userDetails

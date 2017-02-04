@@ -12,6 +12,7 @@ const mainSaga = require('./sagas')
 const Api = require('./api')
 const {
   initializeApi,
+  closeApi,
   receiveEvent
 } = require('./actions')
 
@@ -50,6 +51,7 @@ const connect = () => {
 
   socket.addEventListener('close', () => {
     console.log("closed")
+    store.dispatch(closeApi())
     setTimeout(connect, 2000)
   })
 }

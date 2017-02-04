@@ -1,4 +1,5 @@
 const INITIALIZE_API = 'initialize-api'
+const CLOSE_API = 'close-api'
 const RECEIVE_EVENT = 'receive-event'
 const SET_USER_DETAILS = 'set-user-details'
 const TOGGLE_ATTENDEE_ATTENTION = 'toggle-attendee-attention'
@@ -11,6 +12,9 @@ module.exports = {
     type: INITIALIZE_API,
     api
   }),
+
+  CLOSE_API,
+  closeApi: () => ({ type: CLOSE_API }),
 
   RECEIVE_EVENT,
   receiveEvent: event => ({
