@@ -8,6 +8,7 @@ const {
 const {
   USER_ENTERED_ROOM,
   USER_LEFT_ROOM,
+  USER_STARTED_PAYING_ATTENTION,
   USER_STOPPED_PAYING_ATTENTION
 } = require('./events')
 
@@ -36,18 +37,21 @@ const roomAttendees = (state = {}, action) => {
         deviceIds: attendee.deviceIds.concat([deviceId])
       })
       state = Object.assign({}, state, { [email]: updatedAttendee })
-      console.log("entered", state)
       return state
     }
 
+    case receiveEventActionType(USER_STARTED_PAYING_ATTENTION): {
+      const { email } = action.event.payload
+      const attendee = state[email]
+      const updatedAttendee = Object.assign({}, attendee, { isPayingAttention: true })
+      return Object.assign({}, state, { [email]: updatedAttendee })
+    }
+
     case receiveEventActionType(USER_STOPPED_PAYING_ATTENTION): {
-      console.log('---', action.event.payload)
       const { email } = action.event.payload
       const attendee = state[email]
       const updatedAttendee = Object.assign({}, attendee, { isPayingAttention: false })
-      state = Object.assign({}, state, { [email]: updatedAttendee })
-      console.log(state)
-      return state
+      return Object.assign({}, state, { [email]: updatedAttendee })
     }
 
     case receiveEventActionType(USER_LEFT_ROOM): {

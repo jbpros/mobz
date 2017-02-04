@@ -44,11 +44,11 @@ const connect = () => {
     store.dispatch(receiveEvent(event))
   })
 
-  socket.addEventListener('error', (a) => {
+  socket.addEventListener('error', () => {
     // console.log("ERROR", a)
   })
 
-  socket.addEventListener('close', (a) => {
+  socket.addEventListener('close', () => {
     console.log("closed")
     setTimeout(connect, 2000)
   })

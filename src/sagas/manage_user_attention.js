@@ -13,6 +13,7 @@ function* manageUserAttention() {
     let isPayingAttention = true
     yield takeEvery(TOGGLE_ATTENDEE_ATTENTION, function* ({ email }) {
       isPayingAttention = !isPayingAttention
+
       if (isPayingAttention)
         yield call(::api.startPayingAttention, { email })
       else {

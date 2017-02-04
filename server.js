@@ -6,10 +6,12 @@ const {
   PINGED,
   USER_ENTERED_ROOM,
   USER_LEFT_ROOM,
+  USER_STARTED_PAYING_ATTENTION,
   USER_STOPPED_PAYING_ATTENTION
 } = require('./src/events')
 const {
   ENTER_ROOM,
+  START_PAYING_ATTENTION,
   STOP_PAYING_ATTENTION
 } = require('./src/commands')
 
@@ -102,13 +104,18 @@ server.listen(8080, '127.0.0.1', () => {
           })
         }
 
+        case START_PAYING_ATTENTION: {
+          const { email } = command.payload
+          return publishEvent(USER_STARTED_PAYING_ATTENTION, { email })
+        }
+
         case STOP_PAYING_ATTENTION: {
           const { email } = command.payload
           return publishEvent(USER_STOPPED_PAYING_ATTENTION, { email })
         }
 
         default: {
-          console.log("Unknown message:", JSON.stringify(message, null, 2))
+          console.error("Unknown message:", JSON.stringify(message, null, 2))
         }
       }
     })
