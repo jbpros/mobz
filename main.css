@@ -1,0 +1,36 @@
+@import 'node_modules/basscss-addons/modules/btn/index.css';
+@import 'node_modules/basscss-addons/modules/btn-primary/index.css';
+@import 'node_modules/basscss-addons/modules/btn-sizes/index.css';
+@import 'node_modules/basscss/css/basscss.css';
+
+html: { height: 100%; }
+
+body {
+  background: white;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+.circle {
+  border-radius: 9999;
+}
+
+.border-darken {
+  border-color: rgba(0,0,0,.4);
+}
+
+.faded {
+  opacity: .3;
+}
+
+.api-ready {
+  background-color: green;
+  opacity: .6;
+}
+
+.api-closed {
+  background-color: red;
+  opacity: .6;
+}
