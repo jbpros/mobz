@@ -25,12 +25,21 @@ body {
   opacity: .3;
 }
 
-.api-ready {
-  background-color: green;
+.StatusIndicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: grey;
   opacity: .6;
 }
 
-.api-closed {
+.StatusIndicator--ready {
+  background-color: green;
+}
+
+.StatusIndicator--closed {
   background-color: red;
-  opacity: .6;
 }
