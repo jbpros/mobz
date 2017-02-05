@@ -19,7 +19,7 @@ class RoomAttendees extends React.Component {
   }
 
   render() {
-    return <ul className="list-reset flex flex-wrap justify-center">{this.renderAttendees()}</ul>
+    return <ul className="m0 list-reset flex flex-wrap justify-center">{this.renderAttendees()}</ul>
   }
 }
 

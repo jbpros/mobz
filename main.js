@@ -9,17 +9,19 @@ function createMainWindow() {
     title: 'Mobz',
     // x: 9999,
     // y: 0,
-    width: 420,
-    height: 240,
-    // frame: false,
+    width: 220,
+    height: 80,
+    frame: false,
     // focusable: false,
     alwaysOnTop: true,
     fullscreenable: false,
     hasShadow: false,
     // resizable: false,
     // movable: false,
-    // transparent: true
+    transparent: true
   })
+
+  win.setContentSize(220, 66)
 
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),

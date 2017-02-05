@@ -3,14 +3,18 @@
 @import 'node_modules/basscss-addons/modules/btn-sizes/index.css';
 @import 'node_modules/basscss/css/basscss.css';
 
-html: { height: 100%; }
+html: {
+  height: 100%;
+}
 
 body {
-  background: white;
+  background: rgba(255, 255, 255, .75);
   margin: 0;
   height: 100%;
   overflow: hidden;
   font-family: sans-serif;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
 }
 
 .circle {
