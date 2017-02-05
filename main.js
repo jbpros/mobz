@@ -7,22 +7,21 @@ let win, tray
 function createMainWindow() {
   win = new BrowserWindow({
     title: 'Mobz',
-    // x: 9999,
-    // y: 0,
     width: 220,
     height: 80,
     frame: false,
-    // focusable: false,
     alwaysOnTop: true,
     fullscreenable: false,
     hasShadow: false,
+    transparent: true
+    // focusable: false,
     // resizable: false,
     // movable: false,
-    transparent: true
   })
 
   win.setContentSize(220, 66)
 
+  console.log(win.getBounds())
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
@@ -35,6 +34,17 @@ function createMainWindow() {
 
 app.on('ready', () => {
   const template = [
+    {
+      label: 'Edit',
+      submenu: [
+        {
+          role: 'undo'
+        },
+        {
+          role: 'redo'
+        }
+      ]
+    },
     {
       label: 'View',
       submenu: [
@@ -115,7 +125,7 @@ app.on('ready', () => {
       ]
     })
     // Edit menu.
-    template[1].submenu.push(
+    template[2].submenu.push(
       {
         type: 'separator'
       },
@@ -132,7 +142,7 @@ app.on('ready', () => {
       }
     )
     // Window menu.
-    template[3].submenu = [
+    template[4].submenu = [
       {
         label: 'Close',
         accelerator: 'CmdOrCtrl+W',
