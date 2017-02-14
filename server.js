@@ -6,11 +6,13 @@ const {
   PINGED,
   USER_ENTERED_ROOM,
   USER_LEFT_ROOM,
+  USER_STATUS_SET,
   USER_STARTED_PAYING_ATTENTION,
   USER_STOPPED_PAYING_ATTENTION
 } = require('./src/events')
 const {
   ENTER_ROOM,
+  SET_USER_STATUS,
   START_PAYING_ATTENTION,
   STOP_PAYING_ATTENTION
 } = require('./src/commands')
@@ -102,6 +104,11 @@ server.listen(8080, '127.0.0.1', () => {
             deviceId: userDetails.deviceId,
             email: userDetails.email
           })
+        }
+
+        case SET_USER_STATUS: {
+          const { email, status } = command.payload
+          return publishEvent(USER_STATUS_SET, { email, status })
         }
 
         case START_PAYING_ATTENTION: {

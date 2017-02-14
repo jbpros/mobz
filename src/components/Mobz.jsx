@@ -13,6 +13,7 @@ const {
   pickUserDetails
 } = require('../pickers')
 const {
+  setUserStatus,
   toggleUserAttention
 } = require('../actions')
 
@@ -22,12 +23,21 @@ class Mobz extends React.Component {
       this.props.dispatch(toggleUserAttention({ email: this.props.userDetails.email }))
   }
 
+  handleStatusClick() {
+    const status = this.refs.status.value
+    this.props.dispatch(setUserStatus({
+      email: this.props.userDetails.email,
+      status
+    }))
+  }
+
   renderUserDetails() {
     return <UserDetails />
   }
 
   renderRoom() {
     return <div>
+      <input ref='status'></input><button onClick={::this.handleStatusClick}>set</button>
       <RoomAttendees
         attendees={this.props.roomAttendees}
         onAttendeeClick={::this.handleAttendeeClick} />

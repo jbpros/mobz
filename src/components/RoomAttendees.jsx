@@ -14,6 +14,7 @@ class RoomAttendees extends React.Component {
           className={classNames}
           size={48}
           onClick={() => this.props.onAttendeeClick(attendeeDetails)} />
+        <span>{attendeeDetails.status}</span>
       </li>
     })
   }
