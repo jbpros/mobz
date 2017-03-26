@@ -1,6 +1,7 @@
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onSubmit, onClick)
+import MD5
 
 main : Program Never Model Msg
 main =
@@ -70,7 +71,7 @@ viewLoginForm : Model -> Html Msg
 viewLoginForm model =
   if not model.ready then
     div []
-      [ input [ type_ "text", placeholder "Email", onInput Email ] []
+      [ input [ type_ "email", placeholder "Email", onInput Email ] []
       , input [ type_ "submit", value "Yo" ] []
       ]
   else
@@ -94,6 +95,7 @@ viewApp model =
           , text model.email
           , text "!"
           ]
+        , viewGravatar model.email
         , p []
           [ text "You are currently "
           , text status
@@ -104,15 +106,9 @@ viewApp model =
     else
       text ""
 
+viewGravatar : String -> Html Msg
+viewGravatar email =
+  img [ src <| String.concat ["https://www.gravatar.com/avatar/", MD5.hex email] ] []
 
 
--- viewValidation : Model -> Html msg
--- viewValidation model =
---   let
---     (color, message) =
---       if model.password == model.passwordAgain then
---         ("green", "OK")
---       else
---         ("red", "Passwords do not match!")
---   in
---     div [ style [("color", color)] ] [ text message ]
+-- https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200
