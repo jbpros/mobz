@@ -8,3 +8,4 @@ build/
 out/
 .tags
 *.log
+elm-stuff
