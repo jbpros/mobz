@@ -62,15 +62,16 @@ update msg model =
 
 view : Model -> Html Msg
 view model =
-  Html.form [ onSubmit Login ]
+  div []
     [ viewLoginForm model
     , viewApp model
     ]
 
+
 viewLoginForm : Model -> Html Msg
 viewLoginForm model =
   if not model.ready then
-    div []
+    Html.form [ onSubmit Login ]
       [ input [ type_ "email", placeholder "Email", onInput Email ] []
       , input [ type_ "submit", value "Yo" ] []
       ]
@@ -109,6 +110,3 @@ viewApp model =
 viewGravatar : String -> Html Msg
 viewGravatar email =
   img [ src <| String.concat ["https://www.gravatar.com/avatar/", MD5.hex email] ] []
-
-
--- https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200
