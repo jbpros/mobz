@@ -15,17 +15,21 @@ main =
 
 -- MODEL
 
-type alias Model =
+type alias UserSettings =
   { email : String
+  , statusMessage: String
   , ready : Bool
+  }
+
+type alias Model =
+  { userSettings : UserSettings
   , status : Status
-  , statusMessage : String
   }
 
 
 init : ( Model, Cmd msg )
 init =
-  ( Model "" False Active "LOL", Cmd.none)
+  ( Model (UserSettings "" "" False) Active, Cmd.none)
 
 
 -- UPDATE
@@ -45,25 +49,52 @@ type Status
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
+  ({ model
+      | userSettings = (updateUserSettings msg model.userSettings)
+      , status = (updateStatus msg model.status)
+  }, Cmd.none)
+
+updateStatus : Msg -> Status -> Status
+updateStatus msg status =
   case msg of
     Email email ->
-      ({ model | email = email }, Cmd.none)
+      status
 
     StatusMessage statusMessage ->
-      ({ model | statusMessage = statusMessage }, Cmd.none)
+      status
 
     Login ->
-      ({ model | ready = True }, Cmd.none) -- TODO: tell backend
+      status
 
     SetInactive ->
-      ({ model | status = Inactive }, Cmd.none) -- TODO: tell backend
+      Inactive -- TODO: tell backend
 
     SetActive ->
-      ({ model | status = Active }, Cmd.none) -- TODO: tell backend
+      Active -- TODO: tell backend
 
     SetStatusMessage ->
-      (model, Cmd.none) -- TODO: tell backend
+      status -- TODO: tell backend
 
+updateUserSettings : Msg -> UserSettings -> UserSettings
+updateUserSettings msg userSettings =
+  case msg of
+    Email email ->
+      { userSettings | email = email }
+
+    StatusMessage statusMessage ->
+      { userSettings | statusMessage = statusMessage }
+
+    Login ->
+      { userSettings | ready = True } -- TODO: tell backend
+
+    SetInactive ->
+      userSettings -- TODO: tell backend
+
+    SetActive ->
+      userSettings -- TODO: tell backend
+
+    SetStatusMessage ->
+      userSettings -- TODO: tell backend
 
 -- VIEW
 
@@ -71,25 +102,29 @@ update msg model =
 view : Model -> Html Msg
 view model =
   div [ class "block border circle border-darken"  ]
-    [ viewLoginForm model
+    [ viewLoginForm model.userSettings
     , viewApp model
     ]
 
 
-viewLoginForm : Model -> Html Msg
-viewLoginForm model =
-  if not model.ready then
+viewLoginForm : UserSettings -> Html Msg
+viewLoginForm userSettings =
+  if not userSettings.ready then
     Html.form [ onSubmit Login ]
-      [ input [ type_ "email", placeholder "Email", onInput Email, value model.email ] []
+      [ input [ type_ "email", placeholder "Email", onInput Email, value userSettings.email ] []
       , input [ type_ "submit", value "Go" ] []
       ]
   else
     text ""
 
-viewStatusMessageForm : Model -> Html Msg
-viewStatusMessageForm model =
+viewStatusMessageForm : UserSettings -> Html Msg
+viewStatusMessageForm userSettings =
   Html.form [ onSubmit SetStatusMessage ]
-    [ input [ type_ "text", placeholder "Your status", onInput StatusMessage, value model.statusMessage ] []
+    [ input [ type_ "text"
+            , placeholder "Your status"
+            , onInput StatusMessage
+            , value userSettings.statusMessage
+            ] []
     , input [ type_ "submit", value "Set status message" ] []
     ]
 
@@ -104,22 +139,22 @@ viewApp model =
         Inactive ->
           ("inactive", SetActive, "Pay attention")
   in
-    if model.ready then
+    if model.userSettings.ready then
       div []
         [ h1 []
           [ text "Welcome to mobz, "
-          , text model.email
+          , text model.userSettings.email
           , text "!"
           ]
-        , viewGravatar model.email
+        , viewGravatar model.userSettings.email
         , p []
           [ text "You are currently "
           , text status
-          , viewStatusMessage model.statusMessage
+          , viewStatusMessage model.userSettings.statusMessage
           ]
         , button [ onClick toggleStatus ]
           [ text toggleLabel ]
-        , viewStatusMessageForm model
+        , viewStatusMessageForm model.userSettings
         ]
     else
       text ""
