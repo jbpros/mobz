@@ -79,19 +79,16 @@ updateStatus msg status =
             status
 
         SetInactive ->
+            -- TODO: tell backend
             Inactive
 
-        -- TODO: tell backend
         SetActive ->
+            -- TODO: tell backend
             Active
 
-        -- TODO: tell backend
         SetStatusMessage ->
+            -- TODO: tell backend
             status
-
-
-
--- TODO: tell backend
 
 
 updateUserSettings : Msg -> UserSettings -> UserSettings
