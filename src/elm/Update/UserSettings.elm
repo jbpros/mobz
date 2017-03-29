@@ -17,14 +17,5 @@ update msg userSettings =
         Login ->
             { userSettings | ready = True }
 
-        -- TODO: tell backend
-        SetInactive ->
-            userSettings
-
-        -- TODO: tell backend
-        SetActive ->
-            userSettings
-
-        -- TODO: tell backend
-        SetStatusMessage ->
+        _ ->
             userSettings

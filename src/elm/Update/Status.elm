@@ -7,15 +7,6 @@ import Msg.Main exposing (..)
 update : Msg -> Status -> Status
 update msg status =
     case msg of
-        Email email ->
-            status
-
-        StatusMessage statusMessage ->
-            status
-
-        Login ->
-            status
-
         SetInactive ->
             -- TODO: tell backend
             Inactive
@@ -24,6 +15,5 @@ update msg status =
             -- TODO: tell backend
             Active
 
-        SetStatusMessage ->
-            -- TODO: tell backend
+        _ ->
             status
