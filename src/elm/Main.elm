@@ -3,6 +3,8 @@ module Main exposing (..)
 import Html exposing (..)
 import Update.Main exposing (updateWithCmd)
 import Model.Main exposing (..)
+import Model.Status exposing (..)
+import Model.UserSettings exposing (UserSettings)
 import Msg.Main exposing (Msg)
 import View.Main exposing (view)
 

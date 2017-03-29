@@ -3,7 +3,7 @@ module View.LoginForm exposing (view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput, onSubmit, onClick)
-import Model.Main exposing (..)
+import Model.UserSettings exposing (UserSettings)
 import Msg.Main exposing (..)
 
 
