@@ -1,10 +1,10 @@
 module Model.Main exposing (..)
 
 import Model.Status exposing (Status)
-import Model.UserSettings exposing (UserSettings)
+import Model.UserSettings as UserSettings
 
 
 type alias Model =
-    { userSettings : UserSettings
+    { userSettings : UserSettings.Model
     , status : Status
     }

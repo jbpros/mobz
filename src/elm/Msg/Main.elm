@@ -1,10 +1,9 @@
 module Msg.Main exposing (..)
 
+import Msg.UserSettings as UserSettings
+
 
 type Msg
-    = Email String
-    | StatusMessage String
-    | Login
+    = MsgForUserSettings UserSettings.Msg
     | SetInactive
     | SetActive
-    | SetStatusMessage

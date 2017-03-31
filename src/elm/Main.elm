@@ -4,7 +4,7 @@ import Html exposing (..)
 import Update.Main exposing (updateWithCmd)
 import Model.Main exposing (..)
 import Model.Status exposing (..)
-import Model.UserSettings exposing (UserSettings)
+import Model.UserSettings as UserSettings
 import Msg.Main exposing (Msg)
 import View.Main exposing (view)
 
@@ -21,4 +21,4 @@ main =
 
 init : ( Model, Cmd msg )
 init =
-    ( Model (UserSettings "" "" False) Active, Cmd.none )
+    ( Model (UserSettings.Model "" "" False) Active, Cmd.none )
