@@ -1,6 +1,6 @@
 module Model.Status exposing (..)
 
 
-type Status
+type Model
     = Active
     | Inactive

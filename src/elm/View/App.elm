@@ -4,13 +4,14 @@ import Html exposing (..)
 import Html.Events exposing (onInput, onSubmit, onClick)
 import Model.Main exposing (..)
 import Model.Status exposing (..)
-import Msg.Main exposing (..)
+import Msg.Main as Main exposing (..)
+import Msg.Status exposing (..)
 import View.Gravatar as Gravatar exposing (view)
 import View.StatusForm as StatusForm exposing (view)
 import View.StatusMessage as StatusMessage exposing (view)
 
 
-view : Model -> Html Msg
+view : Model.Main.Model -> Html Main.Msg
 view model =
     let
         ( status, toggleStatus, toggleLabel ) =
@@ -34,7 +35,7 @@ view model =
                     , text status
                     , StatusMessage.view model.userSettings.statusMessage
                     ]
-                , button [ onClick toggleStatus ]
+                , button [ onClick (Main.MsgForStatus toggleStatus) ]
                     [ text toggleLabel ]
                 , StatusForm.view model.userSettings
                 ]
