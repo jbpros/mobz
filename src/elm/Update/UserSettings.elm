@@ -1,7 +1,5 @@
 module Update.UserSettings exposing (update)
 
--- import Model.Main exposing (..)
-
 import Model.UserSettings exposing (Model)
 import Msg.Main as Main exposing (..)
 import Msg.UserSettings as UserSettings exposing (..)
