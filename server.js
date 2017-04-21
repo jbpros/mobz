@@ -80,7 +80,7 @@ const events = []
 
 publishEvent(PINGED)
 
-// setInterval(() => publishEvent(PINGED), 10000)
+setInterval(() => publishEvent(PINGED), 1000)
 
 const server = http.createServer()
 
