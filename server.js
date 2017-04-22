@@ -80,7 +80,12 @@ const events = []
 
 publishEvent(PINGED)
 
-setInterval(() => publishEvent(PINGED), 1000)
+setInterval(() => publishEvent(PINGED), 3000)
+
+publishEvent(USER_ENTERED_ROOM, {
+  deviceId: "aslak-device-id",
+  email: "aslak@cucumber.io"
+})
 
 const server = http.createServer()
 

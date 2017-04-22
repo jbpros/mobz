@@ -5,6 +5,7 @@ import Update.Main exposing (updateWithCmd)
 import Model.Main exposing (..)
 import Model.Status as Status
 import Model.UserSettings as UserSettings
+import Model.User as User
 import Msg.Main exposing (Msg)
 import Msg.Server as Server
 import View.Main exposing (view)
@@ -23,7 +24,13 @@ main =
 
 init : ( Model, Cmd msg )
 init =
-    ( Model (UserSettings.Model "" "" False) Status.Active [], Cmd.none )
+    ( Model
+        (UserSettings.Model "" "" False)
+        Status.Active
+        [ User.Model "jb@jbpros.com" Status.Active
+        ]
+    , Cmd.none
+    )
 
 
 subscriptions : Model -> Sub Msg

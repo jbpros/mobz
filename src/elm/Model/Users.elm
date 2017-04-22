@@ -1,13 +1,7 @@
 module Model.Users exposing (..)
 
-import Model.Status as Status exposing (Model)
-
-
-type alias User =
-    { email : String
-    , status : Status.Model
-    }
+import Model.User as User exposing (Model)
 
 
 type alias Model =
-    List User
+    List User.Model

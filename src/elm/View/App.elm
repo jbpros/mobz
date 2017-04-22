@@ -20,6 +20,8 @@ view model =
                 ]
             , Gravatar.view model.userSettings.email
             , Status.view model.userSettings model.status
+            , ul []
+                (List.map (\user -> li [] [ text user.email ]) model.users)
             ]
     else
         text ""
