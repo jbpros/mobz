@@ -86,6 +86,14 @@ publishEvent(USER_ENTERED_ROOM, {
   deviceId: "aslak-device-id",
   email: "aslak@cucumber.io"
 })
+publishEvent(USER_ENTERED_ROOM, {
+  deviceId: "matt-device-id",
+  email: "matt@cucumber.io"
+})
+publishEvent(USER_ENTERED_ROOM, {
+  deviceId: "tooky-device-id",
+  email: "tooky@cucumber.io"
+})
 
 const server = http.createServer()
 

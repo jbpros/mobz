@@ -1,16 +1,28 @@
 module Update.Users exposing (update)
 
-import Json.Decode as JsDecode
+import Json.Decode exposing (..)
 import Model.Users exposing (Model)
 import Msg.Main as Main exposing (..)
 import Msg.Server as Users exposing (..)
 import Debug exposing (..)
 
 
+type alias DeviceId =
+    String
+
+
+type alias Email =
+    String
+
+
+type alias Timestamp =
+    Int
+
+
 type ServerMsg
-    = Pinged Int
-    | UserEnteredRoom String
-    | Unknown
+    = Pinged Timestamp
+    | UserEnteredRoom Timestamp DeviceId Email
+    | Unknown Timestamp
 
 
 update : Main.Msg -> Model -> Model
@@ -28,59 +40,47 @@ updateUsers msg users =
     case msg of
         NewMessage json ->
             let
-                decoded =
-                    decodeMsgFromServer json
-
                 serverMsg =
-                    log "decoded" decoded
+                    log "decoded" <| logJson json
             in
                 users
 
 
-decodeMsgFromServer : String -> String
-decodeMsgFromServer msg =
-    let
-        decodeTimestamp =
-            JsDecode.field "timestamp" JsDecode.int
+logJson : String -> String
+logJson json =
+    case (decodeString (decodeMsgFromServer json) json) of
+        Ok (Pinged timestamp) ->
+            String.concat [ "--pinged[", toString timestamp, "]--" ]
 
-        serverMsgDecoder =
-            JsDecode.field "type" JsDecode.string
-                |> JsDecode.andThen
-                    (\s ->
-                        case s of
-                            "pinged" ->
-                                let
-                                    a =
-                                        JsDecode.decodeString decodeTimestamp msg
-                                in
-                                    case a of
-                                        Ok timestamp ->
-                                            JsDecode.succeed <|
-                                                Pinged timestamp
+        Ok (UserEnteredRoom timestamp deviceId email) ->
+            String.concat [ "--entered[", toString timestamp, "]:", email, " (", deviceId, ")--" ]
 
-                                        Err string ->
-                                            JsDecode.succeed Unknown
+        Ok (Unknown timestamp) ->
+            String.concat [ "--unknown[", toString timestamp, "]--" ]
 
-                            "user-entered-room" ->
-                                JsDecode.succeed <|
-                                    UserEnteredRoom "someone@cucumber.io"
+        Err _ ->
+            "--err--"
 
-                            _ ->
-                                JsDecode.succeed Unknown
-                    )
 
-        a =
-            JsDecode.decodeString serverMsgDecoder msg
-    in
-        case a of
-            Ok (Pinged timestamp) ->
-                String.concat [ "--pinged:", toString timestamp, "--" ]
+decodeMsgFromServer : String -> Decoder ServerMsg
+decodeMsgFromServer json =
+    field "type" string
+        |> andThen (decodeEvent json)
 
-            Ok (UserEnteredRoom email) ->
-                String.concat [ "--entered:", email, "--" ]
 
-            Ok Unknown ->
-                "--unknown--"
+decodeEvent : String -> String -> Decoder ServerMsg
+decodeEvent json eventType =
+    case eventType of
+        "pinged" ->
+            map Pinged
+                (at [ "timestamp" ] int)
 
-            Err _ ->
-                "--err--"
+        "user-entered-room" ->
+            map3 UserEnteredRoom
+                (at [ "timestamp" ] int)
+                (at [ "payload", "deviceId" ] string)
+                (at [ "payload", "email" ] string)
+
+        _ ->
+            map Unknown
+                (at [ "timestamp" ] int)
