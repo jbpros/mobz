@@ -1,10 +1,12 @@
 module Update.Users exposing (update)
 
 import Json.Decode exposing (..)
-import Model.Users exposing (Model)
-import Msg.Main as Main exposing (..)
-import Msg.Server as Users exposing (..)
 import Debug exposing (..)
+import Model.Users as Users
+import Model.User as User
+import Model.Status as Status
+import Msg.Main as MainMsg
+import Msg.Server as ServerMsg
 
 
 type alias DeviceId =
@@ -25,30 +27,38 @@ type ServerMsg
     | Unknown Timestamp
 
 
-update : Main.Msg -> Model -> Model
+update : MainMsg.Msg -> Users.Model -> Users.Model
 update msgFor users =
     case msgFor of
-        MsgFromServer msg ->
+        MainMsg.MsgFromServer msg ->
             updateUsers msg users
 
         _ ->
             users
 
 
-updateUsers : Users.Msg -> Model -> Model
+updateUsers : ServerMsg.Msg -> Users.Model -> Users.Model
 updateUsers msg users =
     case msg of
-        NewMessage json ->
+        ServerMsg.NewMessage json ->
             let
                 serverMsg =
-                    log "decoded" <| logJson json
+                    decodeString decodeMsgFromServer json
+
+                a =
+                    log "decoded" <| logJson serverMsg
             in
-                users
+                case serverMsg of
+                    Ok (UserEnteredRoom timestamp deviceId email) ->
+                        List.append users [ User.Model email Status.Active ]
+
+                    _ ->
+                        users
 
 
-logJson : String -> String
-logJson json =
-    case decodeString decodeMsgFromServer json of
+logJson : Result String ServerMsg -> String
+logJson serverMsg =
+    case serverMsg of
         Ok (Pinged timestamp) ->
             String.concat [ "--pinged[", toString timestamp, "]--" ]
 
