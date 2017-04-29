@@ -48,7 +48,7 @@ updateUsers msg users =
 
 logJson : String -> String
 logJson json =
-    case (decodeString (decodeMsgFromServer json) json) of
+    case decodeString decodeMsgFromServer json of
         Ok (Pinged timestamp) ->
             String.concat [ "--pinged[", toString timestamp, "]--" ]
 
@@ -62,14 +62,14 @@ logJson json =
             "--err--"
 
 
-decodeMsgFromServer : String -> Decoder ServerMsg
-decodeMsgFromServer json =
+decodeMsgFromServer : Decoder ServerMsg
+decodeMsgFromServer =
     field "type" string
-        |> andThen (decodeEvent json)
+        |> andThen decodeEvent
 
 
-decodeEvent : String -> String -> Decoder ServerMsg
-decodeEvent json eventType =
+decodeEvent : String -> Decoder ServerMsg
+decodeEvent eventType =
     case eventType of
         "pinged" ->
             map Pinged
