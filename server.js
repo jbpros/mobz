@@ -80,7 +80,7 @@ const events = []
 
 publishEvent(PINGED)
 
-setInterval(() => publishEvent(PINGED), 3000)
+setInterval(() => publishEvent(PINGED), 60000)
 
 publishEvent(USER_ENTERED_ROOM, {
   deviceId: "aslak-device-id",
