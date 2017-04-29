@@ -12,7 +12,10 @@ class UserDetailsForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    this.props.onSubmit({ deviceId: Math.random(), email: this.state.email })
+    this.props.onSubmit({
+      deviceId: `did-${Math.random()}`,
+      email: this.state.email
+    })
   }
 
   render() {

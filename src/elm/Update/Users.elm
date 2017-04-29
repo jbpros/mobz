@@ -68,8 +68,8 @@ logJson serverMsg =
         Ok (Unknown timestamp) ->
             String.concat [ "--unknown[", toString timestamp, "]--" ]
 
-        Err _ ->
-            "--err--"
+        Err error ->
+            String.concat [ "--err:", error, "--" ]
 
 
 decodeMsgFromServer : Decoder ServerMsg
